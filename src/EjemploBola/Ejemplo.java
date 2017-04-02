@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Ejemplo para mostrar una de las utilidades de la concurrencia. En este caso el programa no tiene el funcionamiento esperado
  * de una aplicación interactiva, puesto que no responde bien a las acciones del usuario mientras procesa los cambios de la bola.
  * 
@@ -6,11 +6,9 @@
  * Programación de Aplicaciones Interactivas
  */
 
-package EjemploBola;
+import java.awt.image.BufferStrategy;
 
-import java.awt.geom.*;
 import javax.swing.*;
-import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -29,8 +27,7 @@ class Ejemplo {
  * Clase para la pelota del ejemplo, contiene el tamaño y realiza las operaciones para cambiarlo
  */
 class Pelota{
-	private int tam = 15;
-	
+	private int tam = 15; // Tamaño de la pelota
 	private boolean creciendo = true;
 	
 	/**
@@ -39,14 +36,9 @@ class Pelota{
 	 * @param height Alto del panel
 	 */
 	public void modPelota(int width, int height){
-		if(creciendo){
-			tam += 3;
-		}
-		else {
-			tam -= 3;
-			if(tam < 5) {
-				creciendo = true;
-			}
+		tam += creciendo ? 3 : -3;
+		if(tam < 5) {
+			creciendo = true;
 		}
 		if(tam > Math.min(width, height)) {
 			creciendo = !creciendo;
@@ -60,22 +52,28 @@ class Pelota{
 	public int getTam() {
 		return tam;
 	}
-	
 }
 
 /**
  * Panel que contiene la pelota del ejemplo
  */
 class PanelPelota extends JPanel{
+	Canvas canvas;
 	private Pelota pelota;		
 	
 	/**
 	 * La pelota que contiene el panel será la especificada como argumento
+	 * y se creará un canvas sobre el que se dibuja.
 	 * @param pelota Pelota a contener por el panel
 	 */
 	public void add(Pelota pelota){
 		this.pelota = pelota;
-		setDoubleBuffered(true);
+		this.canvas = new Canvas();
+		add(canvas);
+		canvas.createBufferStrategy(2);
+	    canvas.setBackground(Color.WHITE);
+	    canvas.setVisible(true);
+	    canvas.setFocusable(false);
 	}
 	
 	/**
@@ -85,10 +83,22 @@ class PanelPelota extends JPanel{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		if(this.pelota != null) {
-			int tam = pelota.getTam();
-			Graphics2D g2=(Graphics2D)g;
-			g2.fill(new Ellipse2D.Double(getWidth() / 2 - tam / 2,getHeight() / 2 - tam / 2, tam, tam));
+			updateCanvas();
 		}
+	}
+	
+	public void updateCanvas() {
+		int tam = pelota.getTam();
+		int width = getWidth();
+		int height = getHeight();
+		BufferStrategy bufferStrategy = canvas.getBufferStrategy();
+		Graphics g = bufferStrategy.getDrawGraphics();
+		
+		canvas.setSize(width, height);
+		g.clearRect(0, 0, width, height);
+		g.fillOval(getWidth() / 2 - tam / 2,getHeight() / 2 - tam / 2, tam, tam);
+		bufferStrategy.show();
+        g.dispose();
 	}
 }
 
@@ -103,36 +113,33 @@ class FrameJuego extends JFrame{
 	 * Constructor por defecto, pone los botones y los paneles
 	 */
 	public FrameJuego(){
-		setBounds(600,300,400,350);
-		setTitle ("Rebotes");
-		
 		panelPelota = new PanelPelota();
-		add(panelPelota, BorderLayout.CENTER);
-		
 		panelBotones = new JPanel();
-		
+
+		setBounds(600, 300, 400, 350);
+		setTitle ("Rebotes");
 		ponerBoton(panelBotones, "Empezar", new ActionListener(){
 			public void actionPerformed(ActionEvent evento){
-				comienza_el_ejemplo();
+				comienzaEjemplo();
 			}
 		});
-		
 		ponerBoton(panelBotones, "Salir", new ActionListener(){
 			public void actionPerformed(ActionEvent evento){
 				System.exit(0);
 			}
 		});
+		add(panelPelota, BorderLayout.CENTER);
 		add(panelBotones, BorderLayout.SOUTH);
 	}
 	
 	/**
-	 * Añade un botón a su panel correspondiente, también indifado
+	 * Añade un botón a su panel correspondiente, también indicado
 	 * @param c Contenedor del botón
 	 * @param titulo Título del botón
 	 * @param oyente Oyente del botón
 	 */
 	private void ponerBoton(Container c, String titulo, ActionListener oyente){
-		JButton boton=new JButton(titulo);
+		JButton boton = new JButton(titulo);
 		c.add(boton);
 		boton.addActionListener(oyente);
 	}
@@ -140,14 +147,15 @@ class FrameJuego extends JFrame{
 	/**
 	 * Arranca la ejecución de la animación: Crea la pelota y se realiza el bucle.
 	 */
-	public void comienza_el_ejemplo (){
+	public void comienzaEjemplo (){
 		Pelota pelota = new Pelota();
 		panelPelota.add(pelota);
 		
 		for (int i=1; i<=200; i++){
 			try {
-				Thread.sleep(30);
+				Thread.sleep(20); // ~60 FPS
 			} catch (InterruptedException e) {
+				;
 			}
 			pelota.modPelota(panelPelota.getWidth(), panelPelota.getHeight());
 			panelPelota.paint(panelPelota.getGraphics());
