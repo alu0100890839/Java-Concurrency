@@ -6,6 +6,8 @@
  * Programación de Aplicaciones Interactivas
  */
 
+package EjemploBola;
+
 import java.awt.image.BufferStrategy;
 
 import javax.swing.*;
