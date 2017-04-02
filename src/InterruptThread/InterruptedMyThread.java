@@ -1,3 +1,4 @@
+package InterruptThread;
 
 public class InterruptedMyThread extends Thread {
 	private final int LOOP_COUNT = 100_000_000;

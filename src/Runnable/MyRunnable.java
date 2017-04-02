@@ -1,3 +1,4 @@
+package Runnable;
 
 public class MyRunnable implements Runnable {
 	private final static int THREADS = 10;
@@ -15,10 +16,6 @@ public class MyRunnable implements Runnable {
 		}
 		System.out.println("Using runnables!");
 		System.out.println("Hello from main: " + Thread.currentThread().getName());
-	}
-	
-	public MyRunnable() {
-		super();
 	}
 	
 	@Override

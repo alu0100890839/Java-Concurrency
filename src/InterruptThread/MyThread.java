@@ -1,4 +1,4 @@
-
+package InterruptThread;
 public class MyThread extends Thread {
 	private final static int THREADS = 10;
 	private final int LOOP_COUNT = 100_000_000;

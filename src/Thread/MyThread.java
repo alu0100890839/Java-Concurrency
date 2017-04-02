@@ -1,3 +1,4 @@
+package Thread;
 
 public class MyThread extends Thread {
 	private final static int THREADS = 10;

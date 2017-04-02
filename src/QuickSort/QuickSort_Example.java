@@ -1,3 +1,4 @@
+package QuickSort;
 
 public class QuickSort_Example {
 	private final static int TESTS = 3;
