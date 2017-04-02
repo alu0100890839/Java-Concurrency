@@ -1,38 +1,35 @@
+/**
+ * Este ejemplo ilustra el funcionamiento básico de un Runnable usando una
+ * expresión lambda.
+ *
+ * Programación de Aplicaciones Interactivas
+ * Pablo Pastor Martín y Jorge Sierra Acosta
+ */
+
 package LambdaRunnable;
 
+/**
+ * Clase que nos servirá para el ejemplo
+ */
 public class LambdaRunnable {
-	private final static int THREADS = 10;
-	private static final int LOOP_COUNT = 100_000_000;
-	private int sum;
-	
+	private final int LOOP_COUNT = 100_000_000; // Cada hilo ejecutará este número de sumas
+	private int sum;							// Contiene el valor de la suma
+
+	/**
+	 * Función main, crea y ejecuta los hilos.
+	 */
 	public static void main(String args[]) {
-		Thread[] threads = new Thread[THREADS];
-		
-		System.out.println("Using Lambdas");
-		System.out.println("Hello from main: " + Thread.currentThread().getName());
-		for (int i = 0; i < THREADS; ++i) {
-			LambdaRunnable aux = new LambdaRunnable();
-			Runnable task = () -> {
-				aux.setSum(0);
-				for (int j = 0; j < LOOP_COUNT; j++) {
-					aux.incSum();
-				}
-				System.out.println("Hello from main: " + Thread.currentThread().getName());
-			};
-			threads[i] = new Thread(task);
-			threads[i].start();
-		}
-	}
+		int someVariable = 0;
 
-	public int getSum() {
-		return sum;
-	}
+		Runnable task = () -> {
+			// Not permited: someVariable = 1;
+			sum = 0;
+			for (int i = 0; i < LOOP_COUNT; ++i)
+				sum++;
+			System.out.println(sum);
+		};
 
-	public void setSum(int sum) {
-		this.sum = sum;
-	}
-	
-	public void incSum() {
-		setSum(getSum() + 1);
+		Thread thread = new Thread(task);
+		thread.start();
 	}
 }

@@ -1,7 +1,7 @@
 ﻿/**
  * Ejemplo para mostrar una de las utilidades de la concurrencia. En este caso el programa no tiene el funcionamiento esperado
  * de una aplicación interactiva, puesto que no responde bien a las acciones del usuario mientras procesa los cambios de la bola.
- * 
+ *
  * Pablo Pastor Martín y Jorge Sierra Acosta
  * Programación de Aplicaciones Interactivas
  */
@@ -31,7 +31,7 @@ class Ejemplo {
 class Pelota{
 	private int tam = 15; // Tamaño de la pelota
 	private boolean creciendo = true;
-	
+
 	/**
 	 * Modifica el tamaño de la pelota de acuerdo a las dimensiones del panel que la contiene
 	 * @param width Ancho del panel
@@ -46,7 +46,7 @@ class Pelota{
 			creciendo = !creciendo;
 		}
 	}
-	
+
 	/**
 	 * Getter del tamaño
 	 * @return tamaño
@@ -61,8 +61,8 @@ class Pelota{
  */
 class PanelPelota extends JPanel{
 	Canvas canvas;
-	private Pelota pelota;		
-	
+	private Pelota pelota;
+
 	/**
 	 * La pelota que contiene el panel será la especificada como argumento
 	 * y se creará un canvas sobre el que se dibuja.
@@ -77,7 +77,7 @@ class PanelPelota extends JPanel{
 	    canvas.setVisible(true);
 	    canvas.setFocusable(false);
 	}
-	
+
 	/**
 	 * Método encargado de pintar el panel
 	 */
@@ -88,14 +88,17 @@ class PanelPelota extends JPanel{
 			updateCanvas();
 		}
 	}
-	
+
+	/**
+	 * Dibuja la bola en el canvas
+	 */
 	public void updateCanvas() {
 		int tam = pelota.getTam();
 		int width = getWidth();
 		int height = getHeight();
 		BufferStrategy bufferStrategy = canvas.getBufferStrategy();
 		Graphics g = bufferStrategy.getDrawGraphics();
-		
+
 		canvas.setSize(width, height);
 		g.clearRect(0, 0, width, height);
 		g.fillOval(getWidth() / 2 - tam / 2,getHeight() / 2 - tam / 2, tam, tam);
@@ -110,7 +113,7 @@ class PanelPelota extends JPanel{
 class FrameJuego extends JFrame{
 	PanelPelota panelPelota;
 	JPanel panelBotones;
-	
+
 	/**
 	 * Constructor por defecto, pone los botones y los paneles
 	 */
@@ -133,7 +136,7 @@ class FrameJuego extends JFrame{
 		add(panelPelota, BorderLayout.CENTER);
 		add(panelBotones, BorderLayout.SOUTH);
 	}
-	
+
 	/**
 	 * Añade un botón a su panel correspondiente, también indicado
 	 * @param c Contenedor del botón
@@ -145,14 +148,14 @@ class FrameJuego extends JFrame{
 		c.add(boton);
 		boton.addActionListener(oyente);
 	}
-	
+
 	/**
 	 * Arranca la ejecución de la animación: Crea la pelota y se realiza el bucle.
 	 */
 	public void comienzaEjemplo (){
 		Pelota pelota = new Pelota();
 		panelPelota.add(pelota);
-		
+
 		for (int i=1; i<=200; i++){
 			try {
 				Thread.sleep(20); // ~60 FPS
