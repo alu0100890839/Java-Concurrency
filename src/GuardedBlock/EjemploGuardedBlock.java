@@ -52,7 +52,7 @@ public class EjemploGuardedBlock {
 	 * Se puede hacer un bucle infinito hasta que se cumpla la condición (Ineficiente) o pausar y
 	 * esperar por una señal. Imprime las iteraciones realizadas
 	 */
-	private synchronized void waitForSignal() {
+	private /*synchronized*/ void waitForSignal() {
 		System.out.println("Hilo 1: Esperando por la señal...");
 		long contador = 0;
 		// Bucle de espera

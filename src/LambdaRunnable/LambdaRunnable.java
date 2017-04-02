@@ -12,7 +12,7 @@ package LambdaRunnable;
  * Clase que nos servirá para el ejemplo
  */
 public class LambdaRunnable {
-	private final int LOOP_COUNT = 100_000_000; // Cada hilo ejecutará este número de sumas
+	private static final int LOOP_COUNT = 100_000_000; // Cada hilo ejecutará este número de sumas
 	private int sum;							// Contiene el valor de la suma
 
 	/**
@@ -20,17 +20,28 @@ public class LambdaRunnable {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		int someVariable = 0;
-
+		LambdaRunnable aux = new LambdaRunnable();
 		Runnable task = () -> {
 			// Not permited: someVariable = 1;
-			sum = 0;
+			aux.setSum(0);
 			for (int i = 0; i < LOOP_COUNT; ++i)
-				sum++;
-			System.out.println(sum);
+				aux.siguiente();
+			System.out.println("Hello from main: " + aux.getSum());
 		};
 
 		Thread thread = new Thread(task);
 		thread.start();
+	}
+	
+	public int getSum() {
+		return sum;
+	}
+	
+	public void siguiente() {
+		setSum(getSum() +1);
+	}
+	
+	public void setSum(int aux) {
+		sum = aux;
 	}
 }
