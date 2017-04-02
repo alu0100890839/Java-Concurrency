@@ -65,6 +65,6 @@ public class EjemploGuardedBlock {
 	private synchronized void notificar() {
 		aux = true;
 		System.out.println("Hilo 2: Ya es true");
-		//notifyAll();
+		// notifyAll();
 	}
 }
