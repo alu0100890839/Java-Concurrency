@@ -18,6 +18,7 @@ public class MyThread extends Thread {
 
 	/**
 	 * Función main, crea y ejecuta los hilos.
+	 * @param args
 	 */
 	public static void main(String args[]) {
 		MyThread[] threads = new MyThread[THREADS];

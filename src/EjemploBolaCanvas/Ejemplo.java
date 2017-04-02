@@ -30,7 +30,7 @@ class Ejemplo {
  */
 class Pelota{
 	private int tam = 15; // Tamaño de la pelota
-	private boolean creciendo = true;
+	private boolean creciendo = true; // Indica si la bola está creciendo
 
 	/**
 	 * Modifica el tamaño de la pelota de acuerdo a las dimensiones del panel que la contiene
@@ -39,10 +39,10 @@ class Pelota{
 	 */
 	public void modPelota(int width, int height){
 		tam += creciendo ? 3 : -3;
-		if(tam < 5) {
+		if (tam < 5) {
 			creciendo = true;
 		}
-		if(tam > Math.min(width, height)) {
+		if (tam > Math.min(width, height)) {
 			creciendo = !creciendo;
 		}
 	}
@@ -80,6 +80,7 @@ class PanelPelota extends JPanel{
 
 	/**
 	 * Método encargado de pintar el panel
+	 * @param g objeto Graphics
 	 */
 	@Override
 	public void paintComponent(Graphics g){
@@ -156,7 +157,7 @@ class FrameJuego extends JFrame{
 		Pelota pelota = new Pelota();
 		panelPelota.add(pelota);
 
-		for (int i=1; i<=200; i++){
+		for (int i = 1; i <= 200; i++){
 			try {
 				Thread.sleep(20); // ~60 FPS
 			} catch (InterruptedException e) {

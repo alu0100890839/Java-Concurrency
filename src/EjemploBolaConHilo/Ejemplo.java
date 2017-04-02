@@ -1,7 +1,7 @@
 /**
  * Ejemplo para mostrar una de las utilidades de la concurrencia. En este caso el programa sí tiene el funcionamiento esperado
  * de una aplicación interactiva, puesto que con un hilo extra, sí responde bien a las acciones del usuario mientras procesa los cambios de la bola.
- * 
+ *
  * Pablo Pastor Martín y Jorge Sierra Acosta
  * Programación de Aplicaciones Interactivas
  */
@@ -40,15 +40,16 @@ class BucleHilo implements Runnable{
 		this.pelota = pelota;
 		panelPelota = panel;
 	}
-	
+
 	/**
 	 * Método que contiene lo que el hilo ejecutará
 	 */
 	public void run() {
-		for (int i=1; i<=200; i++){
+		for (int i = 1; i <= 200; i++){
 			try {
 				Thread.sleep(30);
 			} catch (InterruptedException e) {
+				;
 			}
 			pelota.modPelota(panelPelota.getWidth(), panelPelota.getHeight());
 			panelPelota.paint(panelPelota.getGraphics());
@@ -60,30 +61,24 @@ class BucleHilo implements Runnable{
  * Clase para la pelota del ejemplo, contiene el tamaño y realiza las operaciones para cambiarlo
  */
 class Pelota{
-	private int tam = 15;
-	
-	private boolean creciendo = true;
-	
+	private int tam = 15;	// Tamaño inicial de la bola a 15
+	private boolean creciendo = true; // Indica si la bola está creciendo
+
 	/**
 	 * Modifica el tamaño de la pelota de acuerdo a las dimensiones del panel que la contiene
 	 * @param width Ancho del panel
 	 * @param height Alto del panel
 	 */
 	public void modPelota(int width, int height){
-		if(creciendo){
-			tam += 3;
+		tam += creciendo ? 3 : -3;
+		if (tam < 5) {
+			creciendo = true;
 		}
-		else {
-			tam -= 3;
-			if(tam < 5) {
-				creciendo = true;
-			}
-		}
-		if(tam > Math.min(width, height)) {
+		if (tam > Math.min(width, height)) {
 			creciendo = !creciendo;
 		}
 	}
-	
+
 	/**
 	 * Getter del tamaño
 	 * @return tamaño
@@ -91,7 +86,7 @@ class Pelota{
 	public int getTam() {
 		return tam;
 	}
-	
+
 }
 
 /**
@@ -99,7 +94,7 @@ class Pelota{
  */
 class PanelPelota extends JPanel{
 	private Pelota pelota;
-	
+
 	/**
 	 * La pelota que contiene el panel será la especificada como argumento
 	 * @param pelota Pelota a contener por el panel
@@ -108,17 +103,17 @@ class PanelPelota extends JPanel{
 		this.pelota = pelota;
 		setDoubleBuffered(true);
 	}
-	
+
 	/**
 	 * Método encargado de pintar el panel
+	 * @param g objeto Graphics
 	 */
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		if(this.pelota != null) {
+		if (this.pelota != null) {
 			int tam = pelota.getTam();
-			Graphics2D g2=(Graphics2D)g;
-			g2.fill(new Ellipse2D.Double(getWidth() / 2 - tam / 2,getHeight() / 2 - tam / 2, tam, tam));
+			g.fillOval(getWidth() / 2 - tam / 2,getHeight() / 2 - tam / 2, tam, tam);
 		}
 	}
 }
@@ -129,33 +124,30 @@ class PanelPelota extends JPanel{
 class FrameJuego extends JFrame{
 	PanelPelota panelPelota;
 	JPanel panelBotones;
-	
+
 	/**
 	 * Constructor por defecto, pone los botones y los paneles
 	 */
 	public FrameJuego(){
-		setBounds(600,300,400,350);
-		setTitle ("Rebotes");
-		
 		panelPelota = new PanelPelota();
-		add(panelPelota, BorderLayout.CENTER);
-		
 		panelBotones = new JPanel();
-		
+
+		setBounds(600, 300, 400, 350);
+		setTitle ("Rebotes");
 		ponerBoton(panelBotones, "Empezar", new ActionListener(){
 			public void actionPerformed(ActionEvent evento){
-				comienza_el_juego();
+				comienzaEjemplo();
 			}
 		});
-		
 		ponerBoton(panelBotones, "Salir", new ActionListener(){
 			public void actionPerformed(ActionEvent evento){
 				System.exit(0);
 			}
 		});
+		add(panelPelota, BorderLayout.CENTER);
 		add(panelBotones, BorderLayout.SOUTH);
 	}
-	
+
 	/**
 	 * Añade un botón a su panel correspondiente, también indifado
 	 * @param c Contenedor del botón
@@ -163,17 +155,17 @@ class FrameJuego extends JFrame{
 	 * @param oyente Oyente del botón
 	 */
 	private void ponerBoton(Container c, String titulo, ActionListener oyente){
-		JButton boton=new JButton(titulo);
+		JButton boton = new JButton(titulo);
 		c.add(boton);
 		boton.addActionListener(oyente);
 	}
 	/**
 	 * Arranca la ejecución de la animación: Crea la pelota y el hilo donde se realiza el bucle.
 	 */
-	public void comienza_el_juego (){
+	public void comienzaEjemplo (){
 		Pelota pelota = new Pelota();
 		panelPelota.add(pelota);
-		
+
 		Runnable hiloAux = new BucleHilo(pelota, panelPelota);
 		Thread hilo = new Thread(hiloAux);
 		hilo.start();

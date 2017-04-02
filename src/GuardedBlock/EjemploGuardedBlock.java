@@ -20,6 +20,7 @@ public class EjemploGuardedBlock {
 	/**
 	 * Función main, creará dos hilos y los ejecutará. Un hilo se encargará de esperar
 	 * a una notificación mientras el otro la genera después de un tiempo.
+	 * @param args
 	 */
 	public static void main(String args[]) {
 

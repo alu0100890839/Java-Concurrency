@@ -18,6 +18,7 @@ public class MyRunnable implements Runnable {
 
 	/**
 	 * Función main, crea y ejecuta los hilos.
+	 * @param args
 	 */
 	public static void main(String args[]) {
 		MyRunnable[] runnables = new MyRunnable[THREADS];

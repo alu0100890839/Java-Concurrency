@@ -35,7 +35,7 @@ public class Deadlock {
 			public void run() {
 				synchronized (resource2) { // Haz un lock del recurso 2 o espera a que esté disponible
 					System.out.println("Thread 2: locked resource 2");
-					try { Thread.sleep(100);} catch (Exception e) {}
+					try { Thread.sleep(100); } catch (Exception e) {}
 					System.out.println("Thread 1: Waiting for resource 1...");
 					synchronized (resource1) { // Haz un lock del recurso 1 o espera a que esté disponible
 						System.out.println("Thread 2: locked resource 1");

@@ -15,6 +15,8 @@ public class QuickSort {
 
 	/**
 	 * Ordena los elementos del array utilizando uno de los métodos
+	 * @param inputArr array a ordenar
+     * @param concurrent utiliza o no concurrencia (dos hilos)
 	 */
     public void sort(int[] inputArr, boolean concurrent) {
 
@@ -31,6 +33,8 @@ public class QuickSort {
 
 	/**
 	 * Método quicksort, 1 hilo.
+	 * @param lowerIndex índice inferior del array
+     * @param higherIndex índice superior del array
 	 */
     private void quickSort(int lowerIndex, int higherIndex) {
     	int i = lowerIndex;
@@ -58,6 +62,11 @@ public class QuickSort {
             quickSort(i, higherIndex);
     }
 
+	/**
+	 * Método quicksort, 2 hilos.
+	 * @param lowerIndex índice inferior del array
+     * @param higherIndex índice superior del array
+	 */
     private void quickSortConcurrent(int lowerIndex, int higherIndex) {
        int i = lowerIndex;
        int j = higherIndex;

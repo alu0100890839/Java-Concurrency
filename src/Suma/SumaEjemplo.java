@@ -13,6 +13,7 @@ package Suma;
 public class SumaEjemplo {
 	/**
 	 * Función main, genera un contador y dos hilos que lo incrementan.
+	 * @param args
 	 */
 	public static void main (String args[]) throws InterruptedException {
 		Counter counter = new Counter();

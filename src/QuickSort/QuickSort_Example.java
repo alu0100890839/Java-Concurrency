@@ -35,6 +35,7 @@ public class QuickSort_Example {
 
 	/**
 	 * Genera un array aleatorio
+	 * @param size tamaño del array aleatorio
 	 */
     public static int[] randomArray(int size) {
     	int[] array = new int[size];

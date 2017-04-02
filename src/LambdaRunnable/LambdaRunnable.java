@@ -17,6 +17,7 @@ public class LambdaRunnable {
 
 	/**
 	 * Función main, crea y ejecuta los hilos.
+	 * @param args
 	 */
 	public static void main(String args[]) {
 		int someVariable = 0;

@@ -15,6 +15,7 @@ public class InterruptedMyThread extends Thread {
 	/**
 	 * Función main, crea y ejecuta los hilos. El primero sin soportar interrupción
 	 * el segundo soportándola.
+	 * @param args
 	 */
 	public static void main(String args[]) throws InterruptedException {
 		MyThread normal = new MyThread();
